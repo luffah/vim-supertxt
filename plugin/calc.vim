@@ -71,12 +71,10 @@ endfu
 " calc:var:b*(1==1)= 4.14_
 " var:c=v:b*(1==1)= 4.14_
 " calc:2.5*3= 7.50_
-function! CalcUpdate()
+function! s:CalcUpdate()
   for l:i in range(1,line('$'))
     call DoCalc(l:i)
   endfor
 endfunction
 
-command! CalcUpdate call CalcUpdate()
-cabbr calc CalcUpdate
-
+command! CalcUpdate call s:CalcUpdate()

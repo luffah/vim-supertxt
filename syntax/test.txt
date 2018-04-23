@@ -1,6 +1,20 @@
-
-calc:v:a=1
-calc:v=_
+agenda{
+dimanche 15 avril : 
+lundi 16 avril : 
+samedi 21 avril : 
+dimanche 22 avril : 
+>lundi 23 avril : { {{ }}}
+mardi 24 avril : {{{ }}}
+mercredi 25 avril : {{{ }}}
+jeudi 26 avril : {{{ }}}
+vendredi 27 avril : {{{ }}}
+samedi 28 avril : {{{ }}}
+dimanche 29 avril : {{{ }}}
+lundi 30 avril : {{{ }}}
+mardi 01 mai : {{{ }}}
+}
+calc:v:a= 0
+calc:v= 0_
 
 pxl{
     000000000      
@@ -34,14 +48,3 @@ D.\test \.
 E.\test \.
 F.\test \.
 } 
-agenda{
-dimanche 15 avril : 
-lundi 16 avril : 
->mardi 17 avril : 
-mercredi 18 avril : 
-jeudi 19 avril : 
-vendredi 20 avril : 
-samedi 21 avril : 
-dimanche 22 avril : 
-lundi 23 avril : 
-}

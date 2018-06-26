@@ -55,24 +55,28 @@ fu! s:find_agendas_in_lines()
     let l:embedded = 1
   endif
   let l:open = !l:embedded
-  let l:i = 1
-  while l:i <= line('$')
+  let l:prefix_re=g:agenda_checkbox['match_day_prefix']
+  let l:day_idxs=range(len(s:days))
+  for l:i in range(1,line('$'))
     let l:l = getline(l:i)
     if l:open
-      let l:agendas[-1][2]=l:i
       if l:embedded && l:l =~ g:agenda_tag_delimiter[1] " close tag
         let l:open = 0
       else
         " do calendar thing
         if ( !len(l:l) || l:l =~ '^\(\s\{2}\|}}}\)' ) " jump over empty and tabbed lines
           " do nothing
+          if l:i == l:agendas[-1][3]
+            let l:agendas[-1][3]=l:i
+          endif
         else
-          for l:d in range(len(s:days))
+          for l:d in l:day_idxs
             let l:day = s:days[l:d]
-            if l:l =~ g:agenda_checkbox['match_day_prefix'].l:day
-              if match(l:agendas[-1][0], l:d) == -1
+            if l:l =~ l:prefix_re.l:day
+              if index(l:agendas[-1][0], l:d) == -1
                 call add(l:agendas[-1][0], l:d)
                 call add(l:agendas[-1][1], [l:l, l:i, l:d])
+                let l:agendas[-1][3]=l:i
               endif
               break
             endif
@@ -84,8 +88,7 @@ fu! s:find_agendas_in_lines()
       let l:founddays = []
       call add(l:agendas , [[],[],l:i,l:i])
     endif
-    let l:i+=1
-  endwhile
+  endfor
   return l:agendas
 endfu
 
@@ -110,55 +113,51 @@ fu! s:UpdateCal()
       endfor
     else
       let l:foundday=0
-      let l:idec = 0 " the index offset in foundays
-      " for [l:l, l:i, l:day]  in l:agenda
       let l:nbagenda = len(l:agenda) 
       for l:agendaidx in range(l:nbagenda)
         let [l:l, l:i, l:day] = l:agenda[l:agendaidx]
         if l:day <= l:today_idx
           " mark today
-          let l:foundday+=1
           cal setline(l:i+l:dec, substitute(l:l,l:future_re,l:today_cb,''))
         elseif l:foundday==l:day
           " another expected day is found
-          let l:foundday+=1
         else
-          " today has not been found
-          let l:idec = -1
-          while (l:day + l:idec > 0) && (index(l:founddays, l:day + l:idec) == -1)
+          " day is not been found in expected order
+          let l:newday = l:day-1
+          while (l:newday > 0) && (index(l:founddays, l:newday) == -1)
             let l:dec+=1
-            call append(l:i-1, l:past_cb . s:days[ l:day + l:idec ] . l:content_sign)
-            let l:idec-=1
+            call append(l:i-1, l:past_cb . s:days[ l:newday ] . l:content_sign)
+            let l:newday-=1
           endwhile
-          if (l:day + l:idec == l:today_idx) && (index(l:founddays, l:day + l:idec) == -1)
+          if (l:newday == l:today_idx) && (index(l:founddays, l:newday) == -1)
             let l:dec+=1
-            call append(l:i-1, l:today_cb . s:days[ l:day + l:idec ] . l:content_sign)
-            let l:idec-=1
+            call append(l:i-1, l:today_cb . s:days[ l:newday ] . l:content_sign)
           endif
-          let l:foundday=l:day+1
+          let l:foundday=l:day
         endif
-        let l:idec = 1
+        let l:newday = l:day + 1
         let l:ilast = ( (l:agendaidx == l:nbagenda - 1) ? 
               \ l:lastline : ( l:agenda[l:agendaidx+1][1] - 1 ) ) 
-        while (l:day + l:idec < len(s:days))
-              \ && (index(l:founddays,l:day + l:idec) == -1)
+        while (l:newday < len(s:days))
+              \ && (index(l:founddays,l:newday) == -1)
           let l:dec+=1
-          call append(l:ilast+l:dec-1, l:future_cb . s:days[ l:day + l:idec ] . l:content_sign)
-          let l:idec+=1
+          call append(l:ilast+l:dec-1, l:future_cb . s:days[ l:newday ] . l:content_sign)
+          let l:newday+=1
           let l:foundday+=1
         endwhile
+        let l:foundday+=1
       endfor
     endif
   endfor
   exe "w"
 endfu
 
-"command! UpdateCal call <SID>UpdateCal()
+command! UpdateCal call <SID>UpdateCal()
 let g:supertxt_filetypes=get(g:,'supertxt_filetypes',['zim','text','agenda'])
 augroup SuperTxt
   au!
   for ft in g:supertxt_filetypes
-    exe 'au Filetype '.ft.' call <SID>UpdateCal()'
+    exe 'au Filetype '.ft.' silent! call <SID>UpdateCal()'
   endfor
 augroup END
 

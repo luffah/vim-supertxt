@@ -4,7 +4,8 @@
 
 # Addons for your .txt notebooks
 [![agenda](./agenda-clip.gif)
-(Note: `__Highlight__` format is no longer used to highlight today.)
+
+(Note: `>day :` format is no longer used to highlight today.)
 
 # Options
 ```vim
@@ -17,10 +18,12 @@ let g:agenda_checkbox={
       \ 'future': '[ ] ',
       \ 'match_day_prefix' : '^\(\[.\] \)\?',
       \ 'content_sign': ' : '}
-" let g:agenda_tag_delimiter=['^agenda{$','^}$']
 let g:agenda_tag_delimiter=['^{{{agenda:$','^}}}$']
+" old style :
+" let g:agenda_tag_delimiter=['^agenda{$','^}$']
+" let g:agenda_checkbox={ 'today': '>', 'past': '', 'future': '', 'match_day_prefix' : '^', 'content_sign': ' : '}
 ```
 
-This addon add features in text and zimwiki files (See [zim](../vim-zim)) :
+This addon add features in text and zimwiki files (See [zim](https://github.com/luffah/vim-zim)) :
 * Agenda 
-* Pixel art samples (requires .pxlcolors syntax file. See [superpxl](../superpxl) )
+* Pixel art samples (requires .pxlcolors syntax file. See [superpxl](https://github.com/luffah/vim-superpxl) )

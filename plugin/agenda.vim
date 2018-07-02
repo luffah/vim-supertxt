@@ -66,7 +66,7 @@ fu! s:find_agendas_in_lines()
         " do calendar thing
         if ( !len(l:l) || l:l =~ '^\(\s\{2}\|}}}\)' ) " jump over empty and tabbed lines
           " do nothing
-          if l:i == l:agendas[-1][3]
+          if l:i == l:agendas[-1][3]+1
             let l:agendas[-1][3]=l:i
           endif
         else

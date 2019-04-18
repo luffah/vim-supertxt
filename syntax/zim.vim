@@ -7,11 +7,14 @@
 let s:cpo_save = &cpo
 set cpo&vim
 
-syn include @pxlIncl syntax/pxlcolors.vim
-syn match PixelArtDelim "pxl{\|}" contained
-hi def link PixelArtDelim		Ignore
-syn region PxlTop start=+^pxl{+ end=+^}+ contains=PixelArtDelim,@pxlIncl keepend extend
-syn region PxlTop start=+^{{{pxl:+ end=+^}}}+ contains=PixelArtDelim,@pxlIncl keepend extend
+try
+    syn include @pxlIncl syntax/pxlcolors.vim
+    syn match PixelArtDelim "pxl{\|}" contained
+    hi def link PixelArtDelim		Ignore
+    syn region PxlTop start=+^pxl{+ end=+^}+ contains=PixelArtDelim,@pxlIncl keepend extend
+    syn region PxlTop start=+^{{{pxl:+ end=+^}}}+ contains=PixelArtDelim,@pxlIncl keepend extend
+catch
+endtry
 
 syn include @agendaIncl syntax/agenda.vim
 syn match AgendaDelim "agenda{\|}" contained

@@ -27,3 +27,9 @@ let g:agenda_tag_delimiter=['^{{{agenda:$','^}}}$']
 This addon add features in text and zimwiki files (See [zim](https://github.com/luffah/vim-zim)) :
 * Agenda 
 * Pixel art samples (requires .pxlcolors syntax file. See [superpxl](https://github.com/luffah/vim-superpxl) )
+
+
+## Comment
+```
+feel like using a  simplified "org-mode"
+```

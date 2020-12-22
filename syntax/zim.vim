@@ -1,5 +1,5 @@
 "Examples:
-"Pxl{0123456789ABCDEF} 
+"pxl{0123456789ABCDEF} 
 "agenda{
 "lundi 26 févr. : 
 "}

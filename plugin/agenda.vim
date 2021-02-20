@@ -65,7 +65,7 @@ fu! s:find_agendas_in_lines()
   endif
   let l:open = !l:embedded
   let l:prefix_re=g:agenda_checkbox['match_day_prefix']
-  let l:day_re=l:prefix_re.g:agenda_checkbox['match_day'].g:agenda_checkbox['content_sign']
+  let l:day_re=l:prefix_re.g:agenda_checkbox['match_day'].substitute(g:agenda_checkbox['content_sign'], ' $', '[ ]*', '')
   let l:day_idxs=range(len(s:days))
   for l:i in range(1,line('$'))
     let l:l = getline(l:i)
@@ -184,6 +184,7 @@ fu! s:UpdateCal()
     let l:prefix_re=g:agenda_checkbox['match_day_prefix']
     let l:prefix_re_todo=g:agenda_checkbox['match_day_prefix_todo']
     let l:day_re=l:prefix_re.g:agenda_checkbox['match_day'].g:agenda_checkbox['content_sign']
+    let l:day_re=l:prefix_re.g:agenda_checkbox['match_day'].substitute(g:agenda_checkbox['content_sign'], ' $', '[ ]*', '')
     let l:day_re_todo=l:prefix_re_todo.g:agenda_checkbox['match_day'].g:agenda_checkbox['content_sign']
     let l:dayitem = ""
     let l:dayitemidx = 0
